@@ -1,0 +1,1584 @@
+agent:
+  enable_baselines: [ 'supply','enemy', ]
+  # [ 'supply','enemy','survive' ]
+  max_supply_item_num: 10
+  actions:
+    move_dir: [ 0, 15,30,45,60,75,90,105,120,135,150,165,180,195,210,225,240,255,270,285,300,315,330,345 ]
+    yaw: [ 0, 1, 2, 5, 10, 20, -1, -2, -5, -10, -20, ]
+    pitch: [ 0, 0.5, 1, 2, 5, 10, 25, -0.5, -1, -2, -5,-10, -25, ]
+    body_action: ["none", "stop", "run", "slide" , "crouch", "jump", "ground"]
+model:
+  ortho_init: True
+  value_head_init_gains:
+    supply: 0.1
+    enemy: 0.1
+    hit: 1
+  # ===== Encoder =====
+  scalar_encoder:
+    modules:
+      backpack_volume_total:
+        arc: unsqueeze
+        norm_value: 1
+      backpack_volume_rest:
+        arc: unsqueeze
+        norm_value: 1
+      backpack_volume_percent:
+        arc: unsqueeze
+        norm_value: 1
+      is_treat:
+        arc: unsqueeze
+        norm_value: 1
+      treat_remain_time:
+        arc: unsqueeze
+        norm_value: 1
+      is_rescue:
+        arc: unsqueeze
+        norm_value: 1
+      rescue_remain_time:
+        arc: unsqueeze
+        norm_value: 1
+      is_rescued:
+        arc: unsqueeze
+        norm_value: 1
+      rescued_remain_time:
+        arc: unsqueeze
+        norm_value: 1
+      is_reloading:
+        arc: unsqueeze
+        norm_value: 1
+      reloading_remain_time:
+        arc: unsqueeze
+        norm_value: 1
+      own_safety_area_state:
+        arc: unsqueeze
+        norm_value: 1
+      own_safety_area_pos_x:
+        arc: scale
+        embedding_dim: 4
+      own_safety_area_pos_y:
+        arc: scale
+        embedding_dim: 4
+      own_safety_area_radius:
+        arc: scale
+        embedding_dim: 4
+      own_safety_area_next_pos_x:
+        arc: scale
+        embedding_dim: 4
+      own_safety_area_next_pos_y:
+        arc: scale
+        embedding_dim: 4
+      own_safety_area_next_radius:
+        arc: scale
+        embedding_dim: 4
+      safety_area_time:
+        arc: unsqueeze
+        norm_value: 1
+      safety_area_total_time:
+        arc: unsqueeze
+        norm_value: 1
+      own_safety_area_rest_time:
+        arc: unsqueeze
+        norm_value: 1
+      own_player_in_blue_safetyarea:
+        arc: unsqueeze
+        norm_value: 1
+      own_player_in_white_safetyarea:
+        arc: unsqueeze
+        norm_value: 1
+      own_player_vec_blue_safetyarea_x:
+        arc: scale
+        embedding_dim: 4
+      own_player_vec_blue_safetyarea_y:
+        arc: scale
+        embedding_dim: 4
+      own_player_vec_white_safetyarea_x:
+        arc: scale
+        embedding_dim: 4
+      own_player_vec_white_safetyarea_y:
+        arc: scale
+        embedding_dim: 4
+      own_dis_blue_safetyarea:
+        arc: unsqueeze
+        norm_value: 1
+      own_dis_white_safetyarea:
+        arc: unsqueeze
+        norm_value: 1
+      own_dis_blue_safetyarea_radius:
+        arc: scale
+        embedding_dim: 4
+      own_dis_white_safetyarea_radius:
+        arc: scale
+        embedding_dim: 4
+      own_whether_run_in_blue_circle_time:
+        arc: unsqueeze
+        norm_value: 1
+      own_whether_run_in_blue_circle:
+        arc: unsqueeze
+        norm_value: 1
+      own_whether_run_in_white_circle:
+        arc: unsqueeze
+        norm_value: 1
+      safezone_pain:
+        arc: unsqueeze
+        norm_value: 1
+      safezone_appear_time:
+        arc: unsqueeze
+        norm_value: 1
+      safezone_delay_time:
+        arc: unsqueeze
+        norm_value: 1
+
+      character_id:
+        arc: binary
+        num_embeddings: 5
+      team_id:
+        arc: binary
+        num_embeddings: 5
+      position_x:
+        arc: scale
+        embedding_dim: 4
+      position_y:
+        arc: scale
+        embedding_dim: 4
+      position_z:
+        arc: scale
+        embedding_dim: 4
+
+      rotation_x:
+        arc: scale
+        embedding_dim: 3
+      rotation_y:
+        arc: scale
+        embedding_dim: 3
+      rotation_z:
+        arc: scale
+        embedding_dim: 3
+      sin_rotation_x:
+        arc: unsqueeze
+        norm_value: 1
+      cos_rotation_x:
+        arc: unsqueeze
+        norm_value: 1
+      sin_rotation_y:
+        arc: unsqueeze
+        norm_value: 1
+      cos_rotation_y:
+        arc: unsqueeze
+        norm_value: 1
+      sin_rotation_z:
+        arc: unsqueeze
+        norm_value: 1
+      cos_rotation_z:
+        arc: unsqueeze
+        norm_value: 1
+
+      size_x:
+        arc: unsqueeze
+        norm_value: 1
+      size_y:
+        arc: unsqueeze
+        norm_value: 1
+      size_z:
+        arc: unsqueeze
+        norm_value: 1
+
+      speed_x:
+        arc: scale
+        embedding_dim: 3
+      speed_y:
+        arc: scale
+        embedding_dim: 3
+      speed_z:
+        arc: scale
+        embedding_dim: 3
+      speed_scalar:
+        arc: scale
+        embedding_dim: 3
+      hp:
+        arc: unsqueeze
+        norm_value: 1
+      # hp_delta:
+      #   arc: unsqueeze
+      #   norm_value: 1
+      neardeath_breath:
+        arc: unsqueeze
+        norm_value: 1
+      oxygen:
+        arc: unsqueeze
+        norm_value: 1
+      peek_type:
+        arc: one_hot
+        num_embeddings: 3
+      alive_state:
+        arc: one_hot
+        num_embeddings: 3
+      body_state:
+        arc: one_hot
+        num_embeddings: 8
+
+      is_switching:
+        arc: unsqueeze
+        norm_value: 1
+      is_pose_changing:
+        arc: unsqueeze
+        norm_value: 1
+      is_running:
+        arc: unsqueeze
+        norm_value: 1
+      is_aiming:
+        arc: unsqueeze
+        norm_value: 1
+      is_firing:
+        arc: unsqueeze
+        norm_value: 1
+      is_holding:
+        arc: unsqueeze
+        norm_value: 1
+      is_falling:
+        arc: unsqueeze
+        norm_value: 1
+      is_picking:
+        arc: unsqueeze
+        norm_value: 1
+
+      camera_x:
+        arc: scale
+        embedding_dim: 4
+      camera_y:
+        arc: scale
+        embedding_dim: 4
+      camera_z:
+        arc: scale
+        embedding_dim: 4
+
+      camera_rotation_x:
+        arc: scale
+        embedding_dim: 3
+      camera_rotation_y:
+        arc: scale
+        embedding_dim: 3
+      camera_rotation_z:
+        arc: scale
+        embedding_dim: 3
+      sin_camera_rotation_x:
+        arc: unsqueeze
+        norm_value: 1
+      cos_camera_rotation_x:
+        arc: unsqueeze
+        norm_value: 1
+      sin_camera_rotation_y:
+        arc: unsqueeze
+        norm_value: 1
+      cos_camera_rotation_y:
+        arc: unsqueeze
+        norm_value: 1
+      sin_camera_rotation_z:
+        arc: unsqueeze
+        norm_value: 1
+      cos_camera_rotation_z:
+        arc: unsqueeze
+        norm_value: 1
+      skill_buff_1:
+        arc: binary
+        num_embeddings: 5
+      skill_buff_2:
+        arc: binary
+        num_embeddings: 5
+      skill_buff_3:
+        arc: binary
+        num_embeddings: 5
+      target_x:
+        arc: unsqueeze
+        norm_value: 1
+      target_y:
+        arc: unsqueeze
+        norm_value: 1
+      target_z:
+        arc: unsqueeze
+        norm_value: 1
+      target_x_rel:
+        arc: unsqueeze
+        norm_value: 1
+      target_y_rel:
+        arc: unsqueeze
+        norm_value: 1
+      target_z_rel:
+        arc: unsqueeze
+        norm_value: 1
+      target_distance:
+        arc: unsqueeze
+        norm_value: 1
+      last_action:
+        arc: binary
+        num_embeddings: 7
+      not_visble_enemy_time:
+        arc: unsqueeze
+        norm_value: 1
+      all_player_nums:
+        arc: unsqueeze
+        norm_value: 1
+      alive_player_nums:
+        arc: unsqueeze
+        norm_value: 1
+      player_alive2all_ratio:
+        arc: unsqueeze
+        norm_value: 1
+      all_teammate_nums:
+        arc: unsqueeze
+        norm_value: 1
+      alive_teammate_nums:
+        arc: unsqueeze
+        norm_value: 1
+      teammate_alive2all_ratio:
+        arc: unsqueeze
+        norm_value: 1
+      dir_distance_1:
+        arc: scale
+        embedding_dim: 3
+      dir_distance_2:
+        arc: scale
+        embedding_dim: 3
+      dir_distance_3:
+        arc: scale
+        embedding_dim: 3
+      dir_distance_4:
+        arc: scale
+        embedding_dim: 3
+      dir_distance_5:
+        arc: scale
+        embedding_dim: 3
+      dir_distance_6:
+        arc: scale
+        embedding_dim: 3
+      dir_distance_7:
+        arc: scale
+        embedding_dim: 3
+      dir_distance_8:
+        arc: scale
+        embedding_dim: 3
+      dir_distance_9:
+        arc: scale
+        embedding_dim: 3
+      dir_distance_10:
+        arc: scale
+        embedding_dim: 3
+      dir_distance_11:
+        arc: scale
+        embedding_dim: 3
+      dir_distance_12:
+        arc: scale
+        embedding_dim: 3
+      dir_distance_13:
+        arc: scale
+        embedding_dim: 3
+      dir_distance_14:
+        arc: scale
+        embedding_dim: 3
+      dir_distance_15:
+        arc: scale
+        embedding_dim: 3
+      dir_distance_16:
+        arc: scale
+        embedding_dim: 3
+
+    input_dim: 411
+    hidden_dim: 128
+    layer_num: 2
+    norm_type: 'none'
+    output_dim: 128
+    activation: 'relu'
+
+  teammate_encoder:
+    modules:
+      character:
+        arc: binary
+        num_embeddings: 5
+      teammate_team_id:
+        arc: binary
+        num_embeddings: 5
+      teammate_pos_x:
+        arc: scale
+        embedding_dim: 4
+      teammate_pos_y:
+        arc: scale
+        embedding_dim: 4
+      teammate_pos_z:
+        arc: scale
+        embedding_dim: 4
+      teammate_rotation_x:
+        arc: scale
+        embedding_dim: 3
+      teammate_rotation_y:
+        arc: scale
+        embedding_dim: 3
+      teammate_rotation_z:
+        arc: scale
+        embedding_dim: 3
+      teammate_size_x:
+        arc: unsqueeze
+        norm_value: 1
+      teammate_size_y:
+        arc: unsqueeze
+        norm_value: 1
+      teammate_size_z:
+        arc: unsqueeze
+        norm_value: 1
+      teammate_speed_x:
+        arc: scale
+        embedding_dim: 3
+      teammate_speed_y:
+        arc: scale
+        embedding_dim: 3
+      teammate_speed_z:
+        arc: scale
+        embedding_dim: 3
+      teammate_scalar_speed:
+        arc: scale
+        embedding_dim: 3
+      teammate_hp:
+        arc: unsqueeze
+        norm_value: 1
+      teammate_neardeath_breath:
+        arc: unsqueeze
+        norm_value: 1
+      teammate_oxygen:
+        arc: unsqueeze
+        norm_value: 1
+      teammate_peek:
+        arc: one_hot
+        num_embeddings: 3
+      teammate_alive:
+        arc: one_hot
+        num_embeddings: 3
+      teammate_bodystate:
+        arc: one_hot
+        num_embeddings: 8
+      teammate_camera_position_x:
+        arc: scale
+        embedding_dim: 4
+      teammate_camera_position_y:
+        arc: scale
+        embedding_dim: 4
+      teammate_camera_position_z:
+        arc: scale
+        embedding_dim: 4
+      teammate_camera_rotation_x:
+        arc: scale
+        embedding_dim: 3
+      teammate_camera_rotation_y:
+        arc: scale
+        embedding_dim: 3
+      teammate_camera_rotation_z:
+        arc: scale
+        embedding_dim: 3
+      teammate_sin_rotation_x:
+        arc: scale
+        embedding_dim: 3
+      teammate_cos_rotation_x:
+        arc: scale
+        embedding_dim: 3
+      teammate_sin_rotation_y:
+        arc: scale
+        embedding_dim: 3
+      teammate_cos_rotation_y:
+        arc: scale
+        embedding_dim: 3
+      teammate_sin_rotation_z:
+        arc: scale
+        embedding_dim: 3
+      teammate_cos_rotation_z:
+        arc: scale
+        embedding_dim: 3
+      teammate_is_switching:
+        arc: unsqueeze
+        norm_value: 1
+      teammate_is_pose_changing:
+        arc: unsqueeze
+        norm_value: 1
+      teammate_is_running:
+        arc: unsqueeze
+        norm_value: 1
+      teammate_is_aiming:
+        arc: unsqueeze
+        norm_value: 1
+      teammate_is_firing:
+        arc: unsqueeze
+        norm_value: 1
+      teammate_is_holding:
+        arc: unsqueeze
+        norm_value: 1
+      teammate_is_falling:
+        arc: unsqueeze
+        norm_value: 1
+      teammate_is_picking:
+        arc: unsqueeze
+        norm_value: 1
+      teammate_player_vec_x:
+        arc: scale
+        embedding_dim: 3
+      teammate_player_vec_y:
+        arc: scale
+        embedding_dim: 3
+      teammate_player_vec_z:
+        arc: scale
+        embedding_dim: 3
+      teammate_player_dis:
+        arc: scale
+        embedding_dim: 4
+      teammate_can_see_me:
+        arc: unsqueeze
+        norm_value: 1
+      teammate_sin_camera_rotation_x:
+        arc: unsqueeze
+        norm_value: 1
+      teammate_cos_camera_rotation_x:
+        arc: unsqueeze
+        norm_value: 1
+      teammate_sin_camera_rotation_y:
+        arc: unsqueeze
+        norm_value: 1
+      teammate_cos_camera_rotation_y:
+        arc: unsqueeze
+        norm_value: 1
+      teammate_sin_camera_rotation_z:
+        arc: unsqueeze
+        norm_value: 1
+      teammate_cos_camera_rotation_z:
+        arc: unsqueeze
+        norm_value: 1
+      teammate_in_blue_safetyarea:
+        arc: unsqueeze
+        norm_value: 1
+      teammate_in_white_safetyarea:
+        arc: unsqueeze
+        norm_value: 1
+      teammate_vec_blue_safetyarea_x:
+        arc: scale
+        embedding_dim: 4
+      teammate_vec_blue_safetyarea_y:
+        arc: scale
+        embedding_dim: 4
+      teammate_vec_white_safetyarea_x:
+        arc: scale
+        embedding_dim: 4
+      teammate_vec_white_safetyarea_y:
+        arc: scale
+        embedding_dim: 4
+      teammate_dis_blue_safetyarea_map:
+        arc: unsqueeze
+        norm_value: 1
+      teammate_dis_white_safetyarea_map:
+        arc: unsqueeze
+        norm_value: 1
+      teammate_dis_blue_safetyarea_radius:
+        arc: scale
+        embedding_dim: 4
+      teammate_dis_white_safetyarea_radius:
+        arc: scale
+        embedding_dim: 4
+      whether_teammate_run_in_circle_time:
+        arc: unsqueeze
+        norm_value: 1
+      whether_teammate_run_in_blue_circle:
+        arc: unsqueeze
+        norm_value: 1
+      whether_teammate_run_in_white_circle:
+        arc: unsqueeze
+        norm_value: 1
+      teammate_buff_1:
+        arc: binary
+        num_embeddings: 5
+      teammate_buff_2:
+        arc: binary
+        num_embeddings: 5
+      teammate_buff_3:
+        arc: binary
+        num_embeddings: 5
+
+
+    input_dim: 1425
+    hidden_dim: 128
+    layer_num: 2
+    norm_type: 'none'
+    output_dim: 128
+    activation: 'relu'
+
+  event_encoder:
+    modules:
+      main_type:
+        arc: binary
+        num_embeddings: 3
+      sub_type:
+        arc: binary
+        num_embeddings: 4
+      x:
+        arc: scale
+        embedding_dim: 4
+      y:
+        arc: scale
+        embedding_dim: 4
+      z:
+        arc: scale
+        embedding_dim: 4
+      damage:
+        arc: scale
+        embedding_dim: 3
+      time_delta:
+        arc: unsqueeze
+        norm_value: 1
+      tmp_1:
+        arc: unsqueeze
+        norm_value: 1
+      tmp_2:
+        arc: unsqueeze
+        norm_value: 1
+      tmp_3:
+        arc: unsqueeze
+        norm_value: 1
+      tmp_4:
+        arc: unsqueeze
+        norm_value: 1
+      # backpack_volume_total:
+      #   arc: unsqueeze
+      #   norm_value: 1
+      # backpack_volume_rest:
+      #   arc: unsqueeze
+      #   norm_value: 1
+      # backpack_volume_percent:
+      #   arc: unsqueeze
+      #   norm_value: 1
+    input_dim: 42
+    hidden_dim: 32
+    layer_num: 2
+    norm_type: 'none'
+    output_dim: 16
+    activation: 'relu'
+
+
+
+  rotation_encoder:
+    modules:
+      x:
+        arc: scale
+        embedding_dim: 4
+      y:
+        arc: scale
+        embedding_dim: 4
+      z:
+        arc: scale
+        embedding_dim: 4
+      rotation_x:
+        arc: scale
+        embedding_dim: 3
+      rotation_y:
+        arc: scale
+        embedding_dim: 3
+      rotation_z:
+        arc: scale
+        embedding_dim: 3
+      history_rotation_x:
+        arc: scale
+        embedding_dim: 3
+      history_rotation_y:
+        arc: scale
+        embedding_dim: 3
+      history_rotation_z:
+        arc: scale
+        embedding_dim: 3
+      delta_rotation_x:
+        arc: scale
+        embedding_dim: 3
+      delta_rotation_y:
+        arc: scale
+        embedding_dim: 3
+      delta_rotation_z:
+        arc: scale
+        embedding_dim: 3 
+      time:
+        arc: scale
+        embedding_dim: 3
+      see_enemy:
+        arc: unsqueeze  
+        norm_value: 1
+      delta_pos_x:
+        arc: scale
+        embedding_dim: 4
+      delta_pos_y:
+        arc: scale
+        embedding_dim: 4
+      delta_pos_z:
+        arc: scale
+        embedding_dim: 4
+      distance:
+        arc: scale
+        embedding_dim: 4
+      current_delta_rotation_x:
+        arc: scale
+        embedding_dim: 4
+      current_delta_rotation_y:
+        arc: scale
+        embedding_dim: 4
+      current_delta_rotation_z:
+        arc: scale
+        embedding_dim: 4
+    input_dim: 141
+    hidden_dim: 64
+    layer_num: 2
+    norm_type: 'none'
+    output_dim: 16
+    activation: 'relu'
+
+
+  backpack_item_encoder:
+    modules:
+      main_type:
+        arc: binary
+        num_embeddings: 5
+      subtype:
+        arc: binary
+        num_embeddings: 5
+      sub_id:
+        arc: binary
+        num_embeddings: 5
+      count:
+        arc: scale
+        embedding_dim: 3
+      size:
+        arc: unsqueeze
+        norm_value: 1
+      used_in_slot:
+        arc: unsqueeze
+        norm_value: 1
+      slot_0:
+        arc: unsqueeze
+        norm_value: 1
+      slot_1:
+        arc: unsqueeze
+        norm_value: 1
+      slot_2:
+        arc: unsqueeze
+        norm_value: 1
+      slot_3:
+        arc: unsqueeze
+        norm_value: 1
+      slot_4:
+        arc: unsqueeze
+        norm_value: 1
+      # backpack_volume_total:
+      #   arc: unsqueeze
+      #   norm_value: 1
+      # backpack_volume_rest:
+      #   arc: unsqueeze
+      #   norm_value: 1
+      # backpack_volume_percent:
+      #   arc: unsqueeze
+      #   norm_value: 1
+    input_dim: 28
+    hidden_dim: 64
+    layer_num: 2
+    norm_type: 'none'
+    output_dim: 64
+    activation: 'relu'
+
+  player_weapon_encoder:
+    modules:
+      is_active:
+        arc: unsqueeze
+        norm_value: 1
+      maintype:
+        arc: binary
+        num_embeddings: 5
+      subtype:
+        arc: binary
+        num_embeddings: 5
+      sub_id:
+        arc: binary
+        num_embeddings: 5
+      bullet_current:
+        arc: unsqueeze
+        norm_value: 1
+      bullet_rest:
+        arc: unsqueeze
+        norm_value: 1
+      capacity:
+        arc: unsqueeze
+        norm_value: 1
+      remain_reloading:
+        arc: unsqueeze
+        norm_value: 1
+      Muzzle_main_type:
+        arc: binary
+        num_embeddings: 5
+      Muzzle_subtype:
+        arc: binary
+        num_embeddings: 5
+      Muzzle_sub_id:
+        arc: binary
+        num_embeddings: 5
+      grip_main_type:
+        arc: binary
+        num_embeddings: 5
+      grip_subtypee:
+        arc: binary
+        num_embeddings: 5
+      grip_sub_id:
+        arc: binary
+        num_embeddings: 5
+      
+      butt_main_type:
+        arc: binary
+        num_embeddings: 5
+      butt_subtype:
+        arc: binary
+        num_embeddings: 5
+      butt_sub_id:
+        arc: binary
+        num_embeddings: 5
+      clip_main_type:
+        arc: binary
+        num_embeddings: 5
+      clip_subtype:
+        arc: binary
+        num_embeddings: 5
+      clip_sub_id:
+        arc: binary
+        num_embeddings: 5
+      
+      sight_main_type:
+        arc: binary
+        num_embeddings: 5
+      sight_subtype:
+        arc: binary
+        num_embeddings: 5
+      sight_sub_id:
+        arc: binary
+        num_embeddings: 5
+      bullet_main_type:
+        arc: binary
+        num_embeddings: 5
+      bullet_subtype:
+        arc: binary
+        num_embeddings: 5
+      bullet_sub_id:
+        arc: binary
+        num_embeddings: 5
+    input_dim: 550
+    hidden_dim: 128
+    layer_num: 2
+    norm_type: 'none'
+    output_dim: 128
+    activation: 'relu'
+  door_encoder:
+    modules:
+      distance:
+        arc: scale
+        embedding_dim: 4
+      x:
+        arc: scale
+        embedding_dim: 4
+      y:
+        arc: scale
+        embedding_dim: 4
+      z:
+        arc: scale
+        embedding_dim: 4
+      re_x:
+        arc: scale
+        embedding_dim: 4
+      re_y:
+        arc: scale
+        embedding_dim: 4
+      re_z:
+        arc: scale
+        embedding_dim: 4
+      pitch:
+        arc: scale
+        embedding_dim: 3
+      yaw:
+        arc: scale
+        embedding_dim: 3
+      door_state:
+        arc: unsqueeze
+        norm_value: 1
+      door_type:
+        arc: binary
+        num_embeddings: 4
+    input_dim: 73
+    hidden_dim: 64
+    layer_num: 2
+    norm_type: 'none'
+    output_dim: 32
+    activation: 'relu'
+  monster_encoder:
+    modules:
+      mon2own_distance:
+        arc: scale
+        embedding_dim: 4
+      mon_type:
+        arc: binary
+        num_embeddings: 5
+      mon_max_hp:
+        arc: unsqueeze
+        norm_value: 1
+      mon_cur_hp:
+        arc: unsqueeze
+        norm_value: 1
+      mon_cur_hp_percent:
+        arc: unsqueeze
+        norm_value: 1
+      mon_pos_x:
+        arc: scale
+        embedding_dim: 4
+      mon_pos_y:
+        arc: scale
+        embedding_dim: 4
+      mon_pos_z:
+        arc: scale
+        embedding_dim: 4
+      mon_max_hp:
+        arc: unsqueeze
+        norm_value: 1
+
+      mon_relative_me_pos_x:
+        arc: scale
+        embedding_dim: 4
+      mon_relative_me_pos_y:
+        arc: scale
+        embedding_dim: 4
+      mon_relative_me_pos_z:
+        arc: scale
+        embedding_dim: 4
+      mon_rotation_x:
+        arc: scale
+        embedding_dim: 3
+      mon_rotation_x_sin:
+        arc: unsqueeze
+        norm_value: 1
+
+      mon_rotation_x_cos:
+        arc: unsqueeze
+        norm_value: 1
+      mon_rotation_y:
+        arc: scale
+        embedding_dim: 3
+      mon_rotation_y_sin:
+        arc: unsqueeze
+        norm_value: 1
+      mon_rotation_y_cos:
+        arc: unsqueeze
+        norm_value: 1
+      mon_rotation_z:
+        arc: scale
+        embedding_dim: 3
+      mon_rotation_z_sin:
+        arc: unsqueeze
+        norm_value: 1
+      mon_rotation_z_cos:
+        arc: unsqueeze
+        norm_value: 1
+      mon_size_x:
+        arc: unsqueeze
+        norm_value: 1
+      mon_size_y:
+        arc: unsqueeze
+        norm_value: 1
+      mon_size_z:
+        arc: unsqueeze
+        norm_value: 1
+      mon_target_player:
+        arc: one_hot
+        num_embeddings: 3
+
+    input_dim: 94
+    hidden_dim: 64
+    layer_num: 2
+    norm_type: 'none'
+    output_dim: 32
+    activation: 'relu'
+  enemy_encoder:
+    modules:
+      distance:
+        arc: scale
+        embedding_dim: 4
+      team_id:
+        arc: binary
+        num_embeddings: 5
+      pos_x:
+        arc: scale
+        embedding_dim: 4
+      pos_y:
+        arc: scale
+        embedding_dim: 4
+      pos_z:
+        arc: scale
+        embedding_dim: 4
+      rotation_x:
+        arc: scale
+        embedding_dim: 3
+      rotation_y:
+        arc: scale
+        embedding_dim: 3
+      rotation_z:
+        arc: scale
+        embedding_dim: 3     
+      rotation_sin_x:
+        arc: unsqueeze
+        norm_value: 1
+      rotation_sin_y:
+        arc: unsqueeze
+        norm_value: 1
+      rotation_sin_z:
+        arc: unsqueeze  
+        norm_value: 1      
+      rotation_cos_x:
+        arc: unsqueeze
+        norm_value: 1
+      rotation_cos_y:
+        arc: unsqueeze
+        norm_value: 1
+      rotation_cos_z:
+        arc: unsqueeze  
+        norm_value: 1 
+      size_x:
+        arc: unsqueeze
+        norm_value: 1
+      size_y:
+        arc: unsqueeze
+        norm_value: 1
+      size_z:
+        arc: unsqueeze
+        norm_value: 1
+      speed_x:
+        arc: scale
+        embedding_dim: 3
+      speed_y:
+        arc: scale
+        embedding_dim: 3
+      speed_z:
+        arc: scale
+        embedding_dim: 3
+      scalar_speed:
+        arc: scale
+        embedding_dim: 3
+      hp:
+        arc: unsqueeze
+        norm_value: 1
+      neardeath_breath:
+        arc: unsqueeze
+        norm_value: 1
+      oxygen:
+        arc: unsqueeze
+        norm_value: 1
+      peek:
+        arc: one_hot
+        num_embeddings: 3
+      alive:
+        arc: one_hot
+        num_embeddings: 3
+      bodystate:
+        arc: one_hot
+        num_embeddings: 8
+      relative_pos_x:
+        arc: scale
+        embedding_dim: 4
+      relative_pos_y:
+        arc: scale
+        embedding_dim: 4
+      relative_pos_z:
+        arc: scale
+        embedding_dim: 4
+      character:
+        arc: binary
+        num_embeddings: 5
+      enemy_see_me:
+        arc: unsqueeze
+        norm_value: 1
+      enemy_relative_blue_safetyarea_x:
+        arc: scale
+        embedding_dim: 4
+      enemy_relative_blue_safetyarea_y:
+        arc: unsqueeze
+        norm_value: 1
+      enemy_relative_white_safetyarea_x:
+        arc: scale
+        embedding_dim: 4
+      enemy_relative_white_safetyarea_y:
+        arc: scale
+        embedding_dim: 4
+      enemy_distance_blue_safetyarea:
+        arc: scale
+        embedding_dim: 4
+      enemy_distance_white_safetyarea:
+        arc: scale
+        embedding_dim: 4
+      enemy_distance_blue_safetyarea_relative:
+        arc: scale
+        embedding_dim: 4
+      enemy_distance_white_safetyarea_relative:
+        arc: scale
+        embedding_dim: 4
+      enemy_in_blue_safetyarea:
+        arc: unsqueeze
+        norm_value: 1
+      enemy_in_white_safetyarea:
+        arc: unsqueeze
+        norm_value: 1
+      whether_enemy_run_in_blue_circle_time:
+        arc: unsqueeze
+        norm_value: 1
+      whether_enemy_run_in_blue_circle:
+        arc: unsqueeze
+        norm_value: 1
+      whether_enemy_run_in_white_circle:
+        arc: unsqueeze
+        norm_value: 1
+      hold_gun:
+        arc: unsqueeze
+        norm_value: 1
+      since_last_see_time:
+        arc: unsqueeze
+        norm_value: 1
+      enemy_buff_1:
+        arc: binary
+        num_embeddings: 5
+      enemy_buff_2:
+        arc: binary
+        num_embeddings: 5
+      enemy_buff_3:
+        arc: binary
+        num_embeddings: 5
+      # enemy_item_num:
+      #   arc: unsqueeze
+      #   norm_value: 1
+    input_dim: 214
+    hidden_dim: 128
+    layer_num: 2
+    norm_type: 'none'
+    output_dim: 128
+    activation: 'relu'
+  enemy_visible_encoder:
+    modules:
+      distance:
+        arc: scale
+        embedding_dim: 4
+      team_id:
+        arc: binary
+        num_embeddings: 5
+      pos_x:
+        arc: scale
+        embedding_dim: 4
+      pos_y:
+        arc: scale
+        embedding_dim: 4
+      pos_z:
+        arc: scale
+        embedding_dim: 4
+      rotation_x:
+        arc: scale
+        embedding_dim: 3
+      rotation_y:
+        arc: scale
+        embedding_dim: 3
+      rotation_z:
+        arc: scale
+        embedding_dim: 3   
+      rotation_sin_x:
+        arc: unsqueeze
+        norm_value: 1
+      rotation_sin_y:
+        arc: unsqueeze
+        norm_value: 1
+      rotation_sin_z:
+        arc: unsqueeze  
+        norm_value: 1      
+      rotation_cos_x:
+        arc: unsqueeze
+        norm_value: 1
+      rotation_cos_y:
+        arc: unsqueeze
+        norm_value: 1
+      rotation_cos_z:
+        arc: unsqueeze  
+        norm_value: 1 
+      size_x:
+        arc: unsqueeze
+        norm_value: 1
+      size_y:
+        arc: unsqueeze
+        norm_value: 1
+      size_z:
+        arc: unsqueeze
+        norm_value: 1
+      speed_x:
+        arc: scale
+        embedding_dim: 3
+      speed_y:
+        arc: scale
+        embedding_dim: 3
+      speed_z:
+        arc: scale
+        embedding_dim: 3
+      scalar_speed:
+        arc: scale
+        embedding_dim: 3
+      hp:
+        arc: unsqueeze
+        norm_value: 1
+      neardeath_breath:
+        arc: unsqueeze
+        norm_value: 1
+      oxygen:
+        arc: unsqueeze
+        norm_value: 1
+      peek:
+        arc: one_hot
+        num_embeddings: 3
+      alive:
+        arc: one_hot
+        num_embeddings: 3
+      bodystate:
+        arc: one_hot
+        num_embeddings: 8
+      relative_pos_x:
+        arc: scale
+        embedding_dim: 4
+      relative_pos_y:
+        arc: scale
+        embedding_dim: 4
+      relative_pos_z:
+        arc: scale
+        embedding_dim: 4
+      character:
+        arc: binary
+        num_embeddings: 5
+      enemy_see_me:
+        arc: unsqueeze
+        norm_value: 1
+      enemy_relative_blue_safetyarea_x:
+        arc: scale
+        embedding_dim: 4
+      enemy_relative_blue_safetyarea_y:
+        arc: scale
+        embedding_dim: 4
+      enemy_relative_white_safetyarea_x:
+        arc: scale
+        embedding_dim: 4
+      enemy_relative_white_safetyarea_y:
+        arc: scale
+        embedding_dim: 4
+      enemy_distance_blue_safetyarea:
+        arc: scale
+        embedding_dim: 4
+      enemy_distance_white_safetyarea:
+        arc: scale
+        embedding_dim: 4
+      enemy_distance_blue_safetyarea_relative:
+        arc: scale
+        embedding_dim: 4
+      enemy_distance_white_safetyarea_relative:
+        arc: scale
+        embedding_dim: 4
+      enemy_in_blue_safetyarea:
+        arc: unsqueeze
+        norm_value: 1
+      enemy_in_white_safetyarea:
+        arc: unsqueeze
+        norm_value: 1
+      whether_enemy_run_in_blue_circle_time:
+        arc: unsqueeze
+        norm_value: 1
+      whether_enemy_run_in_blue_circle:
+        arc: unsqueeze
+        norm_value: 1
+      whether_enemy_run_in_white_circle:
+        arc: unsqueeze
+        norm_value: 1
+      hold_gun:
+        arc: unsqueeze
+        norm_value: 1
+      enemy_buff_1:
+        arc: binary
+        num_embeddings: 5
+      enemy_buff_2:
+        arc: binary
+        num_embeddings: 5
+      enemy_buff_3:
+        arc: binary
+        num_embeddings: 5
+      # enemy_item_num:
+      #   arc: unsqueeze
+      #   norm_value: 1
+    input_dim: 220
+    hidden_dim: 128
+    layer_num: 2
+    norm_type: 'none'
+    output_dim: 128
+    activation: 'relu'
+  supply_encoder:
+    modules:
+      distance:
+        arc: unsqueeze
+        norm_value: 1
+      quantity:
+        arc: unsqueeze
+        norm_value: 1
+      attribute:
+        arc: unsqueeze
+        norm_value: 1                
+      pos_x:
+        arc: scale
+        embedding_dim: 4
+      pos_y:
+        arc: scale
+        embedding_dim: 4
+      pos_z:
+        arc: scale
+        embedding_dim: 4
+      relative_pos_x:
+        arc: scale
+        embedding_dim: 4
+      relative_pos_y:
+        arc: scale
+        embedding_dim: 4
+      relative_pos_z:
+        arc: scale
+        embedding_dim: 4
+      air_drop:
+        arc: unsqueeze
+        norm_value: 1
+      main_type:
+        arc: binary
+        num_embeddings: 5
+      subtype:
+        arc: binary
+        num_embeddings: 5
+      sub_id:
+        arc: binary
+        num_embeddings: 5    
+      size:
+        arc: unsqueeze
+        norm_value: 1
+      # supply_item_num:
+      #   arc: unsqueeze
+      #   norm_value: 1            
+    input_dim: 68
+    hidden_dim: 32
+    layer_num: 2
+    norm_type: 'none'
+    output_dim: 32
+    activation: 'relu'
+
+  only_v_encoder:
+    modules:
+      distance:
+        arc: unsqueeze
+        norm_value: 1
+      team_id:
+        arc: binary
+        num_embeddings: 5
+      pos_x:
+        arc: scale
+        embedding_dim: 4
+      pos_y:
+        arc: scale
+        embedding_dim: 4
+      pos_z:
+        arc: scale
+        embedding_dim: 4
+      rotation_x:
+        arc: scale
+        embedding_dim: 3
+      rotation_y:
+        arc: scale
+        embedding_dim: 3
+      rotation_z:
+        arc: scale
+        embedding_dim: 3    
+      rotation_sin_x:
+        arc: unsqueeze
+        norm_value: 1
+      rotation_sin_y:
+        arc: unsqueeze
+        norm_value: 1
+      rotation_sin_z:
+        arc: unsqueeze  
+        norm_value: 1      
+      rotation_cos_x:
+        arc: unsqueeze
+        norm_value: 1
+      rotation_cos_y:
+        arc: unsqueeze
+        norm_value: 1
+      rotation_cos_z:
+        arc: unsqueeze  
+        norm_value: 1 
+      size_x:
+        arc: unsqueeze
+        norm_value: 1
+      size_y:
+        arc: unsqueeze
+        norm_value: 1
+      size_z:
+        arc: unsqueeze
+        norm_value: 1
+      speed_x:
+        arc: scale
+        embedding_dim: 3
+      speed_y:
+        arc: scale
+        embedding_dim: 3
+      speed_z:
+        arc: scale
+        embedding_dim: 3
+      scalar_speed:
+        arc: scale
+        embedding_dim: 3
+      hp:
+        arc: unsqueeze
+        norm_value: 1
+      neardeath_breath:
+        arc: unsqueeze
+        norm_value: 1
+      oxygen:
+        arc: unsqueeze
+        norm_value: 1
+      peek:
+        arc: one_hot
+        num_embeddings: 3
+      alive:
+        arc: one_hot
+        num_embeddings: 3
+      bodystate:
+        arc: one_hot
+        num_embeddings: 8
+      relative_pos_x:
+        arc: scale
+        embedding_dim: 4
+      relative_pos_y:
+        arc: scale
+        embedding_dim: 4
+      relative_pos_z:
+        arc: scale
+        embedding_dim: 4
+      character:
+        arc: binary
+        num_embeddings: 5
+      enemy_see_me:
+        arc: unsqueeze
+        norm_value: 1
+      enemy_relative_blue_safetyarea_x:
+        arc: scale
+        embedding_dim: 4
+      enemy_relative_blue_safetyarea_y:
+        arc: scale
+        embedding_dim: 4
+      enemy_relative_white_safetyarea_x:
+        arc: scale
+        embedding_dim: 4
+      enemy_relative_white_safetyarea_y:
+        arc: scale
+        embedding_dim: 4
+      enemy_distance_blue_safetyarea:
+        arc: scale
+        embedding_dim: 4
+      enemy_distance_white_safetyarea:
+        arc: scale
+        embedding_dim: 4
+      enemy_distance_blue_safetyarea_relative:
+        arc: scale
+        embedding_dim: 4
+      enemy_distance_white_safetyarea_relative:
+        arc: scale
+        embedding_dim: 4
+      enemy_in_blue_safetyarea:
+        arc: unsqueeze
+        norm_value: 1
+      enemy_in_white_safetyarea:
+        arc: unsqueeze
+        norm_value: 1
+      whether_enemy_run_in_blue_circle_time:
+        arc: unsqueeze
+        norm_value: 1
+      whether_enemy_run_in_blue_circle:
+        arc: unsqueeze
+        norm_value: 1
+      whether_enemy_run_in_white_circle:
+        arc: unsqueeze
+        norm_value: 1
+      hold_gun:
+        arc: unsqueeze
+        norm_value: 1
+      since_last_see_time:
+        arc: unsqueeze
+        norm_value: 1
+      enemy_buff_1:
+        arc: binary
+        num_embeddings: 5
+      enemy_buff_2:
+        arc: binary
+        num_embeddings: 5
+      enemy_buff_3:
+        arc: binary
+        num_embeddings: 5
+      # enemy_item_num:
+      #   arc: unsqueeze
+      #   norm_value: 1
+    input_dim: 214
+    hidden_dim: 128
+    layer_num: 2
+    norm_type: 'none'
+    output_dim: 128
+    activation: 'relu'
+      
+  history_position_encoder:
+    input_dim: 120
+    hidden_dim: 128
+    layer_num: 2
+    norm_type: 'none'
+    output_dim: 64
+    activation: 'relu'
+
+  heatmap_encoder:
+    input_dim: 2
+    project_dim: 8
+    activation: 'relu'
+    norm_type: 'none'
+    resnet:
+      down_channels: [ 16 ]
+      activation: 'relu'
+      norm_type: 'none'
+    output:
+      output_dim: 128
+      activation: 'relu'
+      norm_type: 'none'
+  backbone:
+    embedding_dim: 256
+    res_num: 3
+    project:
+      input_dim: 1024 # 768 880 +16
+      activation: 'relu'
+      norm_type: 'none'
+  policy:
+    action_list: [ 'action_type', 'move_dir', 'body_action', 'yaw', 'pitch' ]
+    embedding_dim: 256 #256
+    res_num: 2
+    action_type:
+      action_dim: 4
+#    move_dir:
+#      action_dim: 24
+#    body_action:
+#      action_dim: 6
+#    yaw:
+#      action_dim: 9
+#    pitch:
+#      action_dim: 9
+    target_unit:
+      activation: 'selu'
+      norm_type: 'none'
+      entity_embedding_dim: 128
+      key_dim: 256
+      input_dim: 256
+      temperature: 1.
+  value:
+    embedding_dim: 384
+    res_num: 2

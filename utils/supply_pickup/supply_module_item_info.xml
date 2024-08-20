@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='utf-8'?>
+<SupplyItem>
+	<supply_item id="0" name="箱子" type="0" size="1000" max_num="[1, 1, 1, 1]" priority="1" display="箱子" />
+	<supply_item id="200001001" name="补偿器" type="8" subtype="1" size="10" max_num="[2, 2, 2, 2]" priority="1" display="补偿器" />
+	<supply_item id="200001002" name="消音器" type="8" subtype="1" size="20" max_num="[2, 2, 2, 2]" priority="2" display="消音器" />
+	<supply_item id="200002001" name="红点" type="8" subtype="2" size="10" max_num="[2, 2, 2, 2]" priority="1" display="红点" />
+	<supply_item id="200002002" name="2倍镜" type="8" subtype="2" size="10" max_num="[2, 2, 2, 2]" priority="2" display="2倍镜" />
+	<supply_item id="200002003" name="4倍镜" type="8" subtype="2" size="15" max_num="[2, 2, 2, 2]" priority="4" display="4倍镜" />
+	<supply_item id="200002004" name="6倍镜" type="8" subtype="2" size="20" max_num="[2, 2, 2, 2]" priority="6" display="6倍镜" />
+	<supply_item id="200002005" name="3倍镜" type="8" subtype="2" size="10" max_num="[2, 2, 2, 2]" priority="3" display="3倍镜" />
+	<supply_item id="200002006" name="8倍镜" type="8" subtype="2" size="20" max_num="[2, 2, 2, 2]" priority="8" display="8倍镜" />
+	<supply_item id="200003001" name="直角握把" type="8" subtype="3" size="10" max_num="[2, 2, 2, 2]" priority="1" display="直角握把" />
+	<supply_item id="200003002" name="垂直握把" type="8" subtype="3" size="10" max_num="[2, 2, 2, 2]" priority="1" display="垂直握把" />
+	<supply_item id="200004001" name="自动步枪弹夹" type="8" subtype="4" size="15" max_num="[2, 2, 2, 2]" priority="1" display="自动步枪弹夹" />
+	<supply_item id="200004002" name="狙击枪弹夹" type="8" subtype="4" size="18" max_num="[2, 2, 2, 2]" priority="1" display="狙击枪弹夹" />
+	<supply_item id="200004003" name="冲锋枪弹夹" type="8" subtype="4" size="12" max_num="[2, 2, 2, 2]" priority="1" display="冲锋枪弹夹" />
+	<supply_item id="200005001" name="重型枪托" type="8" subtype="5" size="12" max_num="[2, 2, 2, 2]" priority="1" display="重型枪托" />
+	<supply_item id="200005002" name="轻型枪托" type="8" subtype="5" size="10" max_num="[2, 2, 2, 2]" priority="1" display="轻型枪托" />
+	<supply_item id="200005003" name="狙击枪托" type="8" subtype="5" size="14" max_num="[2, 2, 2, 2]" priority="1" display="狙击枪托" />
+	<supply_item id="2101" name="AK47" type="1" subtype="1" bullet="3102" attachment="[200001001, 200001002, 200003001, 200003002, 200005001, 200004001, 200002001, 200002002, 200002003, 200002005]" size="0" max_num="[2, 2, 2, 2]" priority="890" display="龙鳄突击步枪" />
+	<supply_item id="2102" name="M416" type="1" subtype="1" bullet="3102" attachment="[200001001, 200001002, 200003001, 200003002, 200005001, 200004001, 200002001, 200002002, 200002003, 200002005]" size="0" max_num="[2, 2, 2, 2]" priority="900" display="开拓者突击步枪" />
+	<supply_item id="2103" name="异星枪AK12" type="1" subtype="1" bullet="3102" attachment="[]" size="0" max_num="[2, 2, 2, 2]" priority="880" display="星之彩突击步枪" />
+	<supply_item id="2201" name="SKS" type="1" subtype="2" bullet="3103" attachment="[200001001, 200001002, 200005003, 200004002, 200002002, 200002003, 200002004, 200002005, 200002006]" size="0" max_num="[1, 1, 1, 1]" priority="1000" display="王蛇狙击枪" />
+	<supply_item id="2202" name="AWM" type="1" subtype="2" bullet="3103" attachment="[200001001, 200001002, 200005003, 200004002, 200002002, 200002003, 200002004, 200002005, 200002006]" size="0" max_num="[1, 1, 1, 1]" priority="990" display="执行者狙击枪" />
+	<supply_item id="2203" name="异星枪M82" type="1" subtype="2" bullet="3103" attachment="[]" size="0" max_num="[1, 1, 1, 1]" priority="980" display="修格斯狙击枪" />
+	<supply_item id="2401" name="MP7" type="1" subtype="4" bullet="3101" attachment="[200001001, 200001002, 200003001, 200003002, 200005002, 200004003, 200002001, 200002002]" size="0" max_num="[2, 2, 2, 2]" priority="800" display="朝拜者" />
+	<supply_item id="2402" name="UMP45" type="1" subtype="4" bullet="3101" attachment="[200001001, 200001002, 200003001, 200003002, 200005002, 200004003, 200002001, 200002002]" size="0" max_num="[2, 2, 2, 2]" priority="790" display="断罪者" />
+	<supply_item id="2403" name="异星枪P90" type="1" subtype="4" bullet="3101" attachment="[]" size="0" max_num="[2, 2, 2, 2]" priority="780" display="黑山羊突击步枪" />
+	<supply_item id="2501" name="AA12" type="1" subtype="5" bullet="3104" attachment="[200002001, 200002002]" size="0" max_num="[2, 2, 2, 2]" priority="690" display="野牛霰弹枪" />
+	<supply_item id="2502" name="M1014" type="1" subtype="5" bullet="3104" attachment="[]" size="0" max_num="[2, 2, 2, 2]" priority="700" display="支配者霰弹枪" />
+	<supply_item id="2601" name="M249" type="1" subtype="6" bullet="3102" attachment="[200002001, 200002002]" size="0" max_num="[2, 2, 2, 2]" priority="500" display="毒蛙轻机枪" />
+	<supply_item id="2801" name="F弹" type="1" subtype="8" bullet="3105" attachment="[]" size="0" max_num="[2, 2, 2, 2]" priority="570" display="榴弹枪" />
+	<supply_item id="2802" name="L弹" type="1" subtype="8" bullet="3105" attachment="[]" size="0" max_num="[2, 2, 2, 2]" priority="580" display="激光枪" />
+	<supply_item id="2803" name="M弹" type="1" subtype="8" bullet="3105" attachment="[]" size="0" max_num="[2, 2, 2, 2]" priority="600" display="曳光枪" />
+	<supply_item id="2804" name="S弹" type="1" subtype="8" bullet="3105" attachment="[]" size="0" max_num="[2, 2, 2, 2]" priority="590" display="超级散弹枪" />
+	<supply_item id="3101" name="轻型弹药" type="2" size="0.375" max_num="[-1, -1, -1, -1]" priority="1" display="轻型弹药" />
+	<supply_item id="3102" name="重型弹药" type="2" size="0.5" max_num="[-1, -1, -1, -1]" priority="1" display="重型弹药" />
+	<supply_item id="3103" name="狙击弹药" type="2" size="0.7" max_num="[-1, -1, -1, -1]" priority="1" display="狙击弹药" />
+	<supply_item id="3104" name="散弹弹药" type="2" size="1" max_num="[-1, -1, -1, -1]" priority="1" display="散弹弹药" />
+	<supply_item id="3105" name="特殊弹药" type="2" size="1.25" max_num="[-1, -1, -1, -1]" priority="1" display="特殊弹药" />
+	<supply_item id="3201" name="头部护盾（1级）" type="6" size="0" max_num="[1, 1, 1, 1]" priority="340" display="头部护盾（1级）" />
+	<supply_item id="3202" name="头部护盾（2级）" type="6" size="0" max_num="[1, 1, 1, 1]" priority="350" display="头部护盾（2级）" />
+	<supply_item id="3203" name="头部护盾（3级）" type="6" size="0" max_num="[1, 1, 1, 1]" priority="360" display="头部护盾（3级）" />
+	<supply_item id="3211" name="身体护盾（1级）" type="4" size="0" max_num="[1, 1, 1, 1]" priority="370" display="身体护盾（1级）" />
+	<supply_item id="3212" name="身体护盾（2级）" type="4" size="0" max_num="[1, 1, 1, 1]" priority="380" display="身体护盾（2级）" />
+	<supply_item id="3213" name="身体护盾（3级）" type="4" size="0" max_num="[1, 1, 1, 1]" priority="390" display="身体护盾（3级）" />
+	<supply_item id="3221" name="背包1" type="7" size="0" max_num="[1, 1, 1, 1]" priority="180" display="背包1" />
+	<supply_item id="3222" name="背包2" type="7" size="0" max_num="[1, 1, 1, 1]" priority="190" display="背包2" />
+	<supply_item id="3223" name="背包3" type="7" size="0" max_num="[1, 1, 1, 1]" priority="200" display="背包3" />
+	<supply_item id="3301" name="铁血医药包" type="9" size="10" max_num="[1, 2, 1, 1]" priority="290" display="铁血医药包" />
+	<supply_item id="3302" name="铁血治疗箱" type="9" size="15" max_num="[1, 1, 1, 1]" priority="300" display="铁血治疗箱" />
+	<supply_item id="3307" name="红隼伪装服" type="5" size="0" max_num="[1, 1, 1, 1]" priority="400" display="红隼伪装服" />
+	<supply_item id="3401" name="手雷" type="3" size="18" max_num="[0, 1, 2, 2]" priority="100" display="手雷" />
+</SupplyItem>

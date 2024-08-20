@@ -1,0 +1,339 @@
+# var0: &pipeline 'pj_non_goal_base_replay'
+var0: &pipeline 'pj_non_goal_base'
+var1: &league_resume_path ''
+var2: &checkpoint_path ''
+# var2: &checkpoint_path '/mnt/nfs2/aaa/fps_env_test/fps-main/entry/rl_train/experiments/main_exp_stage_48_inference/MP0/checkpoint/main_exp_stage_48_inference_MP0_iteration_650000.pth.tar'
+var3: &teacher_checkpoint_path ''
+var5: &exp_name main_exp_stage_43_inference_replay_hfx # 加了圈外位置，改了reward
+
+
+
+common:
+  experiment_name: *exp_name
+  gpu_id: 3 # 
+  gpu_ids: [0,1] # use by ddp
+communication:
+  actor_async_send_data: True
+  redis_server_nums: 2
+  running_env: 'k8s'
+  learner_send_train_info_freq: 400
+  learner_send_model_freq: 2
+  actor_model_update_interval: 1 # secondsk
+  actor_ask_job_period: 1
+  send_data_num_workers: 60 # 30 # 配备32核CPU
+  send_data_queue_size: 30
+  grpc_thread_num_works: 2
+  grpc_process_num_works: 2
+  config_update_interval: 5 # mins
+  plasma_store_memory: 300000000000  #300G
+  # redis_collect_data_nums_per_step: 1 
+  # dataloader_mode: "single"
+  # redis_save_traj_nums_per_step: 10
+env:
+  just_for_case: False
+  just_for_replay: True
+  replay:
+    case_path: '/mnt/nfs2/aaa/fps_env_test/share_data/0913/LinuxServer21/ContraBattleRoyale/Saved/stateaction_rl/'
+    server_id: 21   
+  use_time_out: False
+  killer_teams: []
+  team_near_prob: 0.1
+  bot_nums: 0
+  get_fire_good_prob: 1.0
+  env_init_probs:
+    player_num_cfg:
+      player_all_nums: 3
+      mode: [1, 2, 3, 4]
+      probs: [1., 0., 0 , 0 ]
+    house_circle_delta: 3000
+    bot_nums: 0
+    supply_pos_path: "/mnt/nfs2/bbb/bbb/fps_env_test/share_data/0529_config/indoor_by_hand.txt"
+    player_pos_path: "/mnt/nfs2/bbb/bbb/fps_env_test/share_data/0529_config/outdoor.txt"
+    other_pos_path: "/mnt/nfs2/bbb/bbb/fps_env_test/share_data/0529_config/near_door_pos.txt"
+    global_cfg:
+      mode: ["fixed_weapon", "no_weapon", "random_weapon"]
+      probs: [0.3, 0, 0.7]
+    local_cfg:
+      safe_area_center: [190000.0,255000.0]
+      init_loc:
+        player_loc: 0.4 # 出生在正常玩家位置的概率
+        supply_loc: 0.5 # 出生在supply位置的概率
+        other_loc: 0.1 # 出生在山边的概率
+    circle_cfg:
+      mode: ["fixed_circle","big_circle","small_circle","whole_circle","house_circle","val_house_circle", "eval_circle"]
+      probs: [0., 0., 0.6, 0, 0.4, 0., 0.]
+      fixed_circle:
+        circle_path: "/mnt/nfs2/bbb/bbb/fps_env_test/share_data/pj_config/CircleConfig.json" 
+        center: [190000, 255000]
+        radius: 100000
+      big_circle:
+        center_path: "/mnt/nfs2/bbb/bbb/fps_env_test/share_data/pj_config/pj_safe_area_center_100000_1000.txt"
+        radius: 100000
+      small_circle:
+        center_path: "/mnt/nfs2/bbb/bbb/fps_env_test/share_data/pj_config/fixed_pj_safe_area_center_20000_40.txt"
+        radius: 40000
+      house_circle:
+        center_path: "/mnt/nfs2/bbb/bbb/fps_env_test/share_data/0529_config/pj_safe_area_center_house_15000.txt"
+        radius: 30000
+      val_house_circle:
+        center_path: "/mnt/nfs2/bbb/bbb/fps_env_test/share_data/0529_config/pj_safe_area_center_house_15000.txt"
+        radius: 800000
+      whole_circle:
+        center_path: ""
+        radius: 200000
+      eval_circle:
+        center_path: "/mnt/nfs2/bbb/bbb/fps_env_test/share_data/0529_config/pj_safe_area_center_house_15000.txt"
+        radius: 30000
+
+  game_step_raycast_delta: 3
+  raycaster_nums: 4
+  mode: "normal"
+  heat_map:
+    use: True
+    heat_map_loc_norm: 2000
+    heat_map_path: "/mnt/nfs2/aaa/Process_Replay/utils/ckpts/last_hope_no_pitch.torch"
+    heat_map_size: [64,64]
+    heat_map_scale: 10
+    heat_map_deltas: 
+      top2bottom_10: [8,40]
+      pitch_delta_10: [4]
+      yaw_delta_10: [4]
+    heat_map_max_teammate_nums: 5
+    heat_map_max_enemy_nums: 20
+  name: 'fps'
+  team_num: 10
+  player_num_per_team: 2
+  max_game_step: 3000
+  use_xml_generator: True
+  xml_template_path: '/mnt/nfs/aaa/fps_env_test/fps-main/zoo/fps/env/xml_template/pj_base_template.xml'
+  random_hero: True
+  out_xml_dir: 'xml_config'
+game:
+  server_init:
+    server_name: 
+      - "0529"
+      - "0913"
+    server_probs:
+      - 0.
+      - 1.
+    server_zoom:
+      server_0529:
+        path: /mnt/nfs2/bbb/bbb/fps_env_test/share_data/history_ds/0529/gameobj/LinuxServer
+        obj: /mnt/nfs2/bbb/bbb/fps_env_test/share_data/history_ds/0529/gameobj/Obj/World.obj
+      server_0913:
+        path: /mnt/nfs2/aaa/fps_env_test/share_data/0913/LinuxServer21
+        obj: /mnt/nfs2/aaa/fps_env_test/share_data/0913/World.obj
+
+  print_log: False
+  path: /mnt/nfs2/bbb/bbb/fps_env_test/share_data/history_ds/0529/gameobj/LinuxServer
+  map:
+      size:
+        - 403300
+        - 403300
+        - 33000
+      mesh_path:
+        /mnt/nfs2/bbb/bbb/fps_env_test/share_data/history_ds/0529/gameobj/Obj/World.obj
+  depthmap:
+    resolution_enlarge_nums: 10
+    resolution:
+      - 64
+      - 32
+    fov:
+      - 80
+      - 45
+    z_far:
+      200000
+    agent_ray_count:
+      1
+  find_step:
+    10000
+  port:
+    None
+  player_in_raycast: True
+  use_ds_supply_config: True
+  config_path:
+    /mnt/nfs2/bbb/bbb/fps-task/share_data/requriments/
+  player_born_on_ground:
+    True
+  need_log: #DS 是否输出日志，训练时可以关闭日志，速度更快
+    False
+  log_path:
+    '/mnt/nfs/aaa/fps_env_test/share_data/logs'    # '' will use default path
+agent:
+  enable_baselines: ['sum','stuck']
+  act_attention_shift: 0.6
+  pipeline: *pipeline
+  rel_move_dir: True
+  rel_move_angle: True
+  print_log: False
+  fire_invisible: False
+  enable_supply: False
+  enable_battle: True
+  supply_rew_div_val: 1
+  supply_gain_rew_div_val: 1
+  kill_rew_div_val: 0.1
+  knock_rew_div_val: 1
+  damage_rew_div_val: 10
+  suffer_rew_div_val: 10
+  min_enemy_rew_div_val: 100000
+  ignore_min_enemy_dist: 20000
+  action_heads: ["single_head"]
+  fire_delta_heads: ['fire_delta_x', 'fire_delta_z']
+  fire_delta: 500
+  fire_delta_heads_desc: ['fire_delta']
+  fire_delta_heads_action_range:
+    fire_delta_x: [-0.9, -0.7, -0.5, -0.4, -0.35, -0.3, -0.25, -0.2, -0.15, -0.1, 0,  0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.5, 0.7, 0.9] #21
+    fire_delta_z: [-0.5,-0.4,-0.3,-0.2,-0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5] #11
+  action_head_sub:
+    single_head: ["move_dir","yaw","body_action","items_action","switch_weapons","pitch","others"]
+  actions_range:
+    move_dir: [  0. ,  22.5,  45. ,  67.5,  90. , 112.5, 135. , 157.5, 180. , 202.5, 225. , 247.5, 270. , 292.5, 315. , 337.5 ] # 24
+    yaw: [  0. ,  22.5,  45. ,  67.5,  90. , 112.5, 135. , 157.5, 180. , 202.5, 225. , 247.5, 270. , 292.5, 315. , 337.5 ]  # 24
+    pitch: [ -45,  0, 45]
+    #body_action: ["none",]
+    body_action: [ "none", "slide", 'stop' ,'crouch', "run", "jump", "ground", "open_close_door", "rescue" ] #  9 none 为啥也不干
+    items_action: ["fire","reloading","treat","pick_up","drop_supply"] # treat 为打药包 3
+    switch_weapons: [0,1,2]  # 3 
+    others: ["fire_stop","fire_stop_adjust"]
+  reward:
+    search_time_delta: 10
+    mode: "cyrus" # "cyrus"
+    weights:
+      be_seen_reward: -0.002
+      search: 0.0001 # 0.0005
+      time: -0.0002
+      bullet: 0.015
+      hp: 0.03
+      be_knocked_down: 2.5
+      dead: 3.5
+      damage_enemy:  0.1
+      knock_down_enemy: 4.5
+      kill_enemy: 3.5
+      approach_knockdown_teammate: 0.001 #靠近倒地队友的奖励
+      help_up_teammate: 0.8 #扶一下队友（首次扶起）的奖励
+      not_save_teammate: 0.5  #队友倒地后死亡的惩罚
+      goto_circle: 0.00015
+      rank: 0
+      not_stand: 0
+      loc_reward: 0.00005
+      move_focus: 0
+      supply_reward: 0.0
+      close2supply_reward: 0.0 # 0.0005 * 0.001
+      reward_see_enemy: 0.02
+      out_of_circle: -0.012
+      reward_damage_teammate: 0.00004  
+      reward_teamate_up: 0.6
+      reward_teamate_realup: 4.
+      reward_approach_teammate: 0.00005
+      reward_abort_help_up: 0.05
+      reward_stuck: -0.01
+    no_search_distance: 2000
+
+actor:
+  actor_comm: "atten"
+  local: False
+  debug_mode: False
+  remove_env_log_interval: 100
+  job_type: 'train'
+  env_num: 1
+  cpu_num: 200
+  episode_num: 1
+  remove_env_logs: False
+  local_job:
+    player_id: ['MP0','MP0','MP0',] 
+    pipeline: [*pipeline, *pipeline,*pipeline,]
+    config_path: ['','','',]
+    checkpoint_path: [*checkpoint_path, *checkpoint_path,*checkpoint_path,]
+    send_data_players: []
+  log_show_freq: 200
+  open_source_inspect: True
+learner:
+  data_cnt_interval: 2
+  open_source_inspect: True
+  local: False
+  debug_mode: False
+  use_cuda: True
+  use_distributed: False
+  pipeline: *pipeline
+  load_path: ''
+  default_value_pretrain_iters: 0
+  remain_value_pretrain_iters: 0
+  loss_type: 'ppo_target_unit'
+  temperature: 1.0
+  temperature_target_unit: 1.0
+  loss_parameters:
+    ppo_eps: 0.2
+    gae_lambda: 0.95
+    norm_advantage: False
+    dula_clip: False
+    dula_clip_coef: 3
+    reward_normalization: False
+    gammas:
+      sum: 0.995
+      stuck: 0.995
+    lambda: 0.8
+  loss_weights:
+    policy: 1.0
+    value: 1.0
+    values:
+      sum: 1.0
+      stuck: 1.0
+    policies:
+      sum: 1.0
+      stuck: 1.0
+    pg_head_weights:
+      single_head: 1.0
+      target_unit: 1.0
+    entropy_head_weights:
+      single_head: 1.0
+      target_unit: 1.0
+    entropy: 0.027
+  optimizer:
+    type: 'adam' # chosen from ['adam','rmsprop']
+    learning_rate: 0.0
+    weight_decay: 0.0
+    eps: 0.00001
+    # decay: 0.99         # used in 'adam' 0.9 &'rmsprop' 0.99
+    # momentum: 0.         # used in 'adam' 0.999 &'rmsprop' 0
+  grad_clip:
+    type: 'clip_norm'
+    threshold: 10
+    norm_type: 2
+  data:
+    batch_size: 10 #320
+    worker_num: 2
+    unroll_len: 20
+    pin_memory: True
+    fake_dataloader: False
+    max_buffer_size: 2000
+    min_sample_size: 100
+    start_sample_size: 100 # store enough data before sampling, this should be larger than size, else, it will actuall be size
+    max_use: 3 # max_use == 2 means data can be used at most two times
+  log_show_freq: 10
+  save_checkpoint_freq: 2000
+league:
+  resume_path: *league_resume_path
+  save_initial_snapshot : False
+  active_players:
+    checkpoint_path: [*checkpoint_path]
+    player_id: [ 'MP0',]
+    pipeline: [ *pipeline, ]
+    one_phase_step: [ '1e8', ]
+    chosen_weight: [1,]
+  hist_players:
+    player_id: ['BOT' ]
+    checkpoint_path: ['']
+    pipeline: ['bot' ]
+  branch_probs:
+    MainPlayer:
+      sp: 1.0
+      pfsp: 0.0
+    HistoricalPlayer:
+      ladder: 1
+  log_show_freq: 10
+  save_log_freq: 10
+  eval_min_games: 10
+  stat_decay: 0.99
+  stat_warm_up_size: 100
+  show_job: False  # for debug use, if true, will print job_info when league give job
+  show_branch: False  # for debug use, if true, will print branch when league give job

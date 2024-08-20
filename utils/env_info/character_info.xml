@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Character>
+    <character inedx="0" id="1102" name="兰斯"  skill1="23201085" skill2="23201083" skill3="23201084"/>
+    <character inedx="1" id="1101" name="比尔"  skill1="23201088" skill2="23201099" skill3="23201087"/>
+    <character inedx="2" id="1103" name="爱丽塔"  skill1="23201082" skill2="23201080" skill3="23201081"/>
+    <character inedx="3" id="1104" name="布莱德方"  skill1="" skill2="" skill3=""/>
+    <character inedx="4" id="1105" name="布朗尼"  skill1="23201090" skill2="23201092" skill3="23201093"/>
+    <character inedx="5" id="1106" name="莱丽"  skill1="23201091" skill2="23201089" skill3="23201094"/> <!-- 莱丽 被动id有问题 -->
+    <character inedx="6" id="1109" name="莉莉娅"  skill1="23201097" skill2="23201096" skill3="23201098"/>
+    <character inedx="7" id="1100" name="莱丽"  skill1="23201091" skill2="23201089" skill3="23201094"/> 
+</Character>

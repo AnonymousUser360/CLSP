@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<VehicleItem>
+	<vehicle_item id="3301001" name="SportCat跑车(黄)" type="0" size="1000" max_num="[1, 1, 1, 1]" priority="1" display="SportCat跑车(黄)" />
+	<vehicle_item id="3306011" name="吉普车" type="0" size="1000" max_num="[1, 1, 1, 1]" priority="1" display="吉普车" />
+	<vehicle_item id="3307011" name="红色异形摩托" type="0" size="1000" max_num="[1, 1, 1, 1]" priority="1" display="红色异形摩托" />
+
+</VehicleItem>

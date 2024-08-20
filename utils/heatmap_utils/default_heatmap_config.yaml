@@ -1,0 +1,44 @@
+heat_map:
+  wild_area:
+    height_nums: 14
+  housing_area:
+    housing_1:
+      radius: 14000
+      center: [194987.4,256248.4]
+      height_nums: 40 #40
+    housing_2:
+      radius: 16000
+      center: [159794.3,181830.6]
+      height_nums: 40 #40
+    housing_3:
+      radius: 10000
+      center: [96559.9,175125.6]
+      height_nums: 40 # 40
+    housing_4:
+      radius: 13000
+      center: [124424.9,128655.4]
+      height_nums: 40 # 40
+    housing_5:
+      radius: 11000
+      center: [25581.3,209723.8]
+      height_nums: 30
+    housing_6:
+      radius: 13000
+      center: [55048.8,256622.4]
+      height_nums: 30
+    housing_7:
+      radius: 9000
+      center: [108398.5,255518.9]
+      height_nums: 30
+    housing_9: #机场
+      radius: 20000
+      center: [197197,369287]
+      height_nums: 30
+    housing_10: #小岛指挥部
+      radius: 13000
+      center: [286312,332463]
+      height_nums: 30
+    housing_8: #油罐
+      radius: 8000
+      center: [115576,42446]
+      height_nums: 30
