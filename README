@@ -1,0 +1,25 @@
+
+
+Since the dataset needed to conduct the contrast learning is enormouse, more than 100GB.
+Therefore, we provide a toy example to show how to conduct contrastive learning task with respect to Retrevial and Training task.
+
+
+We provide additional more data (~8000 state-text pair) for training&test, data is shared in https://drive.google.com/drive/folders/1BYn0UlJyrUamttGwS8pWXm6EniVrkJ2v?usp=sharing.
+We also provide pretrianed models just for retreval reported in our paper, models are shared in https://drive.google.com/drive/folders/1whfOMXnsCuJORU08_kqTN40Y8rQ33rBe?usp=sharing.
+
+
+TextEncoder:
+Download the DistilBERT model from huggingface and this project will use it as the Text Encoder and tokenizer.
+
+
+Retrieval
+To reproduce the results in paper, just run following python command, but you need to configure the config.py and install the required modules first.
+python main-infer.py
+
+Train
+[Preparing]
+
+
+
+
+This code is based on https://github.com/moein-shariatnia/OpenAI-CLIP/.
