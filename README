@@ -13,12 +13,12 @@ Download the DistilBERT model from huggingface and this project will use it as t
 
 
 Retrieval
-To reproduce the results in paper, just run following python command, but you need to configure the config.py and install the required modules first.
+To reproduce the results in paper, just run following python command, but you need to configure the config.py and install the required modules first. Especially, put the pretrained model and dataset properly.
 python main-infer.py
 
 Train
-[Preparing]
-
+To train the CLSP model, just run the script as follows:
+python main.py.
 
 
 
